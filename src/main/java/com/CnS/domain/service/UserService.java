@@ -1,5 +1,6 @@
 package com.CnS.domain.service;
 
+import com.CnS.domain.dto.LoginDto;
 import com.CnS.domain.entity.Student;
 import com.CnS.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +15,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Student login(Student s) {
-        Optional<Student> student = userRepository.findById(s.getId());
+    public Student login(LoginDto dto) {
+        Optional<Student> student = userRepository.findById(dto.getStudentId());
         if(student.isPresent()){
             String password = student.get().getPassword();
-            if(s.getPassword().equals(password)){
+            if(dto.getPassword().equals(password)){
                 return student.get();
             }else{
                 throw new IllegalArgumentException();
