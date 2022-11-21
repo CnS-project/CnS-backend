@@ -20,5 +20,12 @@ public class Student {
 
     private String password;
 
+    private String email;
+
+    private int grade;
+
+    private int credits;
+
+
 
 }
