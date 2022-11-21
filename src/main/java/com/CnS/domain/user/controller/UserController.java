@@ -1,14 +1,11 @@
-package com.CnS.domain.controller;
+package com.CnS.domain.user.controller;
 
-import com.CnS.domain.dto.LoginDto;
-import com.CnS.domain.entity.Student;
-import com.CnS.domain.service.UserService;
+import com.CnS.domain.user.dto.LoginDto;
+import com.CnS.domain.user.entity.Student;
+import com.CnS.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

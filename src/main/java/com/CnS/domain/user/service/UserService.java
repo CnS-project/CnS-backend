@@ -1,10 +1,9 @@
-package com.CnS.domain.service;
+package com.CnS.domain.user.service;
 
-import com.CnS.domain.dto.LoginDto;
-import com.CnS.domain.entity.Student;
-import com.CnS.domain.repository.UserRepository;
+import com.CnS.domain.user.dto.LoginDto;
+import com.CnS.domain.user.entity.Student;
+import com.CnS.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
