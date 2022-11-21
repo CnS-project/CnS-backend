@@ -12,15 +12,17 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
 
     private final UserService userService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<Student> login(@RequestBody LoginDto dto) {
         return ResponseEntity.ok(userService.login(dto));
     }
+
 
 //    @GetMapping("/users/{student-id}/courses")
 //    public ResponseEntity<Student> inquire(@PathVariable("student-id") Integer id) {
