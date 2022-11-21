@@ -1,8 +1,8 @@
-package com.CnS.domain.controller;
+package com.CnS.domain.course.controller;
 
-import com.CnS.domain.dto.course.CourseInquiryResponseDto;
-import com.CnS.domain.dto.course.CourseInsertRequestDto;
-import com.CnS.domain.service.CourseService;
+import com.CnS.domain.course.dto.CourseInquiryResponseDto;
+import com.CnS.domain.course.dto.CourseInsertRequestDto;
+import com.CnS.domain.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

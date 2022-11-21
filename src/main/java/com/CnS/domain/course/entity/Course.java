@@ -1,4 +1,4 @@
-package com.CnS.domain.entity;
+package com.CnS.domain.course.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

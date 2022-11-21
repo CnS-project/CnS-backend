@@ -1,6 +1,6 @@
-package com.CnS.domain.repository;
+package com.CnS.domain.course.repository;
 
-import com.CnS.domain.entity.Course;
+import com.CnS.domain.course.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

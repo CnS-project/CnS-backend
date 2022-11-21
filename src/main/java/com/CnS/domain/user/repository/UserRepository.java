@@ -1,6 +1,6 @@
-package com.CnS.domain.repository;
+package com.CnS.domain.user.repository;
 
-import com.CnS.domain.entity.Student;
+import com.CnS.domain.user.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.CnS.domain.dto;
+package com.CnS.domain.user.dto;
 
 
 import lombok.Getter;

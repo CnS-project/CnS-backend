@@ -1,4 +1,4 @@
-package com.CnS.domain.entity;
+package com.CnS.domain.user.entity;
 
 
 import lombok.Getter;
