@@ -80,7 +80,7 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
 ###  수강 신청
 
 - Request
-    - URL - /registration-course
+    - URL - /users/registration-course
     - HTTP Method - POST
     - Request Header
       ```
@@ -91,7 +91,6 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
     - Request Body
       ```
       {
-          "courseName" = String
           "courseNumber" = Integer
           "classNumber" = Integer
       }
