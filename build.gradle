@@ -30,6 +30,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
+	// swagger
+	implementation (group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'){
+		exclude module: 'swagger-annotations' exclude module: 'swagger-models'
+	}
+	implementation 'io.swagger:swagger-annotations:1.6.6'
+	implementation 'io.swagger:swagger-models:1.6.6'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+
 }
 
 tasks.named('test') {
