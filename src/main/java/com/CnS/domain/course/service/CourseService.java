@@ -1,9 +1,9 @@
-package com.CnS.domain.service;
+package com.CnS.domain.course.service;
 
-import com.CnS.domain.dto.course.CourseInquiryResponseDto;
-import com.CnS.domain.dto.course.CourseInsertRequestDto;
-import com.CnS.domain.entity.Course;
-import com.CnS.domain.repository.CourseRepository;
+import com.CnS.domain.course.dto.CourseInsertRequestDto;
+import com.CnS.domain.course.entity.Course;
+import com.CnS.domain.course.dto.CourseInquiryResponseDto;
+import com.CnS.domain.course.repository.CourseRepository;
 import com.CnS.global.error.exception.CourseException;
 import com.CnS.global.error.exception.ErrorCode;
 import java.util.Optional;
