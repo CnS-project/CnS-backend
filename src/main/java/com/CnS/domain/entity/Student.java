@@ -2,30 +2,30 @@ package com.CnS.domain.entity;
 
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Getter @Setter
+@Getter
 @Entity
-@Table(name = "sns")
+@Table(name = "students")
 public class Student {
-    @Id
-    private int id;
 
-    private String name;
+    @Id
+    @Column(name = "student_id")
+    private int studentId;
+
+    private String email;
 
     private String password;
 
-    private String email;
+    private String name;
 
     private int grade;
 
     private int credits;
-
 
 
 }
