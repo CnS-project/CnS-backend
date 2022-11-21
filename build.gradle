@@ -28,7 +28,6 @@ dependencies {
 	// mysql
 	implementation 'mysql:mysql-connector-java'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
 	// swagger
 	implementation (group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'){
