@@ -15,7 +15,11 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "B5001", "Server Error"),
 
     // Course
-    DUPLICATE_COURSE(400, "C4001", "The course is existed.")
+    DUPLICATE_COURSE(400, "C4001", "The course is existed"),
+    COURSE_NOT_EXIST(400, "C4002", "The course isn't exist"),
+
+    // User
+    DUPLICATE_REGISTER(400, "U4001", "This course has already been registered.\n")
 
     ;
     private final String code;
