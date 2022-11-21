@@ -4,6 +4,8 @@ import com.CnS.domain.dto.course.CourseInquiryResponseDto;
 import com.CnS.domain.dto.course.CourseInsertRequestDto;
 import com.CnS.domain.entity.Course;
 import com.CnS.domain.repository.CourseRepository;
+import com.CnS.global.error.exception.CourseException;
+import com.CnS.global.error.exception.ErrorCode;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,11 +28,11 @@ public class CourseService {
         String courseId = courseInsertRequestDto.getCourseNumber() + "-" +
             courseInsertRequestDto.getClassNumber();
 
-        Optional<Course> course =
+        Optional<Course> existCourse =
             courseRepository.findById(courseId);
 
-        if (course.isPresent()) {
-            throw new IllegalArgumentException("중복된 과목 존재");
+        if (existCourse.isPresent()) {
+            throw new CourseException("중복된 과목 존재", ErrorCode.DUPLICATE_COURSE);
         }
 
         courseRepository.save(
