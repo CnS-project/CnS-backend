@@ -2,6 +2,7 @@ package com.CnS.global.error;
 
 import com.CnS.global.error.exception.CourseException;
 import com.CnS.global.error.exception.ErrorCode;
+import com.CnS.global.error.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CourseException.class)
-    protected ResponseEntity<ErrorResponse> handleBusinessException(final CourseException e) {
+    protected ResponseEntity<ErrorResponse> handleCourseException(final CourseException e) {
+        log.error("handleEntityNotFoundException", e);
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(UserException.class)
+    protected ResponseEntity<ErrorResponse> handleUserException(final UserException e) {
         log.error("handleEntityNotFoundException", e);
         final ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response = ErrorResponse.of(errorCode);
