@@ -19,18 +19,6 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
           "password" = String
       }
       ```
-
-- Response
-  - Response Body (Status = 200)
-
-    ```
-    {
-        "sessionId" = String
-    }
-    ```
-
----
-
 ###  로그아웃
 
 - Request
