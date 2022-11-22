@@ -6,6 +6,7 @@ import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.course.repository.CourseRepository;
 import com.CnS.domain.user.dto.LoginDto;
 import com.CnS.domain.user.dto.RegisterCourseRequestDto;
+import com.CnS.domain.user.dto.SearchParam;
 import com.CnS.domain.user.entity.RegisterCourse;
 import com.CnS.domain.user.entity.RegisterCourseId;
 import com.CnS.domain.user.entity.Student;
@@ -166,5 +167,21 @@ public class UserService {
 
         Course course = existCourse.get();
         course.setApplicant(course.getApplicant()-1);
+    }
+
+    public List<Course> filter(SearchParam searchParam, HttpServletRequest request) {
+        String major = searchParam.getMajor();
+        int grade = searchParam.getGrade();
+        String professor = searchParam.getProfessor();
+        String name = searchParam.getName();
+        String courseId = searchParam.getCourseId();
+        Course course = new Course();
+        System.out.println("courseId = " + courseId);
+        System.out.println("name = " + name);
+        System.out.println("professor = " + professor);
+        System.out.println("grade = " + grade);
+        System.out.println("major = " + major);
+
+        return Collections.emptyList();
     }
 }
