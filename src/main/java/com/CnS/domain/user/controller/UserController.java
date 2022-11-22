@@ -1,7 +1,6 @@
 package com.CnS.domain.user.controller;
 
 import com.CnS.domain.course.entity.Course;
-import com.CnS.domain.user.dto.FilterDto;
 import com.CnS.domain.user.dto.LoginDto;
 import com.CnS.domain.user.dto.RegisterCourseRequestDto;
 import com.CnS.domain.user.dto.SearchParam;
