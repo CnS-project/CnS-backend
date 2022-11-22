@@ -32,6 +32,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        userService.logout(request);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 //    @GetMapping("/users/{student-id}/courses")
 //    public ResponseEntity<Student> inquire(@PathVariable("student-id") Integer id) {
 //
