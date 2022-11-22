@@ -29,18 +29,21 @@ public class UserService {
     private final CourseRepository courseRepository;
     private final RegisterCourseRepository registerCourseRepository;
 
-    public Student login(LoginDto dto) {
-        Optional<Student> student = userRepository.findById(dto.getStudentId());
-        if(student.isPresent()){
-            String password = student.get().getPassword();
-            if(dto.getPassword().equals(password)){
-                return student.get();
-            }else{
-                throw new IllegalArgumentException();
+    public void login(LoginDto dto, HttpServletRequest request) {
+        Optional<Student> existStudent = userRepository.findById(dto.getStudentId());
+        if (existStudent.isPresent()) {
+            String password = existStudent.get().getPassword();
+            if (dto.getPassword().equals(password)) {
+                Student student = existStudent.get();
+
+                HttpSession session = request.getSession();
+                session.setAttribute(SESSION_ID, student.getStudentId());
+            } else {
+                throw new UserException("패스워드가 잘못되었습니다.", ErrorCode.INVALID_USER_PASSWORD);
             }
 
-        }else{
-            throw new IllegalArgumentException();
+        } else {
+            throw new UserException("아이디가 잘못되었습니다.", ErrorCode.INVALID_USER_ID);
         }
     }
 
