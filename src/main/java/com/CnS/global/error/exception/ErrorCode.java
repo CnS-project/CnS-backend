@@ -19,7 +19,11 @@ public enum ErrorCode {
     COURSE_NOT_EXIST(400, "C4002", "The course isn't exist"),
 
     // User
-    DUPLICATE_REGISTER(400, "U4001", "This course has already been registered.\n")
+    DUPLICATE_REGISTER(400, "U4001", "This course has already been registered.\n"),
+    NONE_SESSION_INFORMATION(401, "U4011", "Session information does not exist"),
+    INVALID_USER_ID(401, "U4012", "User id is invalid"),
+    INVALID_USER_PASSWORD(401, "U4013", "password is invalid"),
+
 
     ;
     private final String code;
