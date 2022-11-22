@@ -38,6 +38,8 @@ public class Course {
 
     private Integer applicant;
 
+    private String major;
+
     public void setApplicant(Integer applicant) {
         this.applicant = applicant;
     }
