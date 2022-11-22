@@ -90,7 +90,7 @@ public class UserService {
                 registerCourseRequestDto.getClassNumber();
 
         Optional<Course> existCourse = courseRepository.findById(courseId);
-
+        Optional<Student> existStudent = userRepository.findById(userId);
         /*
             prev number 를 가져오고,
             ++ , --
@@ -113,6 +113,16 @@ public class UserService {
         if (existRegisterCourse.isPresent()) {
             throw new UserException("이미 신청한 수업입니다.", ErrorCode.DUPLICATE_REGISTER);
         }
+        int capacity = existCourse.get().getCapacity();
+        int applicant = existCourse.get().getApplicant();
+        if (applicant >= capacity) {
+            throw new CourseException("정원이 꽉 찼습니다.", ErrorCode.OVER_CAPACITY);
+        }
+        int curCredit = existStudent.get().getCredits();
+        if(curCredit+existCourse.get().getCredit() > 9){
+            throw new UserException("수강 가능한 학점을 초과하였습니다. (9학점)", ErrorCode.OVER_CREDIT);
+        }
+
 
         // 5. 수강 신청 정보 저장
         registerCourseRepository.save(
@@ -120,10 +130,12 @@ public class UserService {
                         registerCourseId(registerCourseId)
                         .build()
         );
+
+
         Course course = existCourse.get();
         course.setApplicant(course.getApplicant()+1);
-        //학생 학점 증가
-
+        Student student=existStudent.get();
+        student.setCredits(student.getCredits() + course.getCredit());
 
     }
 
