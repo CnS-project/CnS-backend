@@ -34,6 +34,7 @@ public class UserService {
     private final CourseRepository courseRepository;
     private final RegisterCourseRepository registerCourseRepository;
 
+    @Transactional
     public List<Course> courseList(HttpServletRequest request) {
         HttpSession session = request.getSession();
         if (session.getAttribute(SESSION_ID) == null) {
@@ -125,9 +126,32 @@ public class UserService {
     }
 
     public void logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         if (session != null) {
             session.invalidate();
         }
+
+    }
+
+    @Transactional
+    public void cancel(RegisterCourseRequestDto dto, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute(SESSION_ID) == null) {
+            throw new UserException("세션 정보가 없습니다.", ErrorCode.NONE_SESSION_INFORMATION);
+        }
+
+        int userId = (int) session.getAttribute(SESSION_ID);
+
+        String rcId = dto.getCourseNumber() + "-" + dto.getClassNumber();
+
+        RegisterCourseId registerCourseId= RegisterCourseId.builder()
+                .courseId(rcId)
+                .studentId(userId).build();
+        registerCourseRepository.deleteById(registerCourseId);
+        System.out.println("rcId : " + rcId);
+        Optional<Course> existCourse = courseRepository.findById(rcId);
+
+        Course course = existCourse.get();
+        course.setApplicant(course.getApplicant()-1);
     }
 }
