@@ -14,11 +14,15 @@ import com.CnS.domain.user.repository.UserRepository;
 import com.CnS.global.error.exception.CourseException;
 import com.CnS.global.error.exception.ErrorCode;
 import com.CnS.global.error.exception.UserException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +33,24 @@ public class UserService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final RegisterCourseRepository registerCourseRepository;
-    public List<Course> courseList(Integer id){
-        List<String> coursesId = registerCourseRepository.findByStudentId(id);
-        List<Course> allByCoursesId = courseRepository.findAllByCoursesId(coursesId);
-        return allByCoursesId;
 
+    public List<Course> courseList(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute(SESSION_ID) == null) {
+            throw new UserException("세션 정보가 없습니다.", ErrorCode.NONE_SESSION_INFORMATION);
+        }
+
+        int id = (int) session.getAttribute(SESSION_ID);
+
+        List<String> coursesId = registerCourseRepository.findByStudentId(id);
+        if (!coursesId.isEmpty()) {
+            List<Course> allByCoursesId = courseRepository.findAllByCoursesId(coursesId);
+
+            return allByCoursesId;
+
+        }
+
+        return Collections.emptyList();
     }
 
     public void login(LoginDto dto, HttpServletRequest request) {
@@ -54,8 +71,9 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void registerCourse(RegisterCourseRequestDto registerCourseRequestDto,
-        HttpServletRequest request) {
+                               HttpServletRequest request) {
 
         // 1. 로그인이 되었는지 체크
         HttpSession session = request.getSession();
@@ -67,9 +85,15 @@ public class UserService {
 
         // 2. 학수 번호 생성
         String courseId = registerCourseRequestDto.getCourseNumber() + "-" +
-            registerCourseRequestDto.getClassNumber();
+                registerCourseRequestDto.getClassNumber();
 
         Optional<Course> existCourse = courseRepository.findById(courseId);
+
+        /*
+            prev number 를 가져오고,
+            ++ , --
+            next number로 save
+        */
 
         // 3. 해당 강의가 존재하는지 체크
         if (existCourse.isEmpty()) {
@@ -77,11 +101,11 @@ public class UserService {
         }
 
         RegisterCourseId registerCourseId = RegisterCourseId.builder()
-            .courseId(courseId)
-            .studentId(userId).build();
+                .courseId(courseId)
+                .studentId(userId).build();
 
         Optional<RegisterCourse> existRegisterCourse = registerCourseRepository.findById(
-            registerCourseId);
+                registerCourseId);
 
         // 4. 이미 신청한 강의인지 체크
         if (existRegisterCourse.isPresent()) {
@@ -90,10 +114,14 @@ public class UserService {
 
         // 5. 수강 신청 정보 저장
         registerCourseRepository.save(
-            RegisterCourse.builder().
-                registerCourseId(registerCourseId)
-                .build()
+                RegisterCourse.builder().
+                        registerCourseId(registerCourseId)
+                        .build()
         );
+        Course course = existCourse.get();
+        course.setApplicant(course.getApplicant()+1);
+
+
     }
 
     public void logout(HttpServletRequest request) {
