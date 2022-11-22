@@ -1,9 +1,11 @@
 package com.CnS.domain.user.service;
 
+import com.CnS.domain.course.dto.CourseInquiryResponseDto;
 import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.course.repository.CourseRepository;
 import com.CnS.domain.user.dto.LoginDto;
 import com.CnS.domain.user.dto.RegisterCourseRequestDto;
+import com.CnS.domain.user.dto.coursesIdOfUserDto;
 import com.CnS.domain.user.entity.RegisterCourse;
 import com.CnS.domain.user.entity.RegisterCourseId;
 import com.CnS.domain.user.entity.Student;
@@ -12,9 +14,11 @@ import com.CnS.domain.user.repository.UserRepository;
 import com.CnS.global.error.exception.CourseException;
 import com.CnS.global.error.exception.ErrorCode;
 import com.CnS.global.error.exception.UserException;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +28,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final RegisterCourseRepository registerCourseRepository;
+    public coursesIdOfUserDto courseList(Integer id){
 
+        return coursesIdOfUserDto.builder()
+                    .coursesIds(registerCourseRepository.findByStudentId(id))
+                    .build();
+
+
+    }
     public Student login(LoginDto dto) {
         Optional<Student> student = userRepository.findById(dto.getStudentId());
         if(student.isPresent()){
