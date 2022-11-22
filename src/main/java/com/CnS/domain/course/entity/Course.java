@@ -36,5 +36,11 @@ public class Course {
 
     private Integer capacity;
 
+    private Integer applicant;
+
+    public void setApplicant(Integer applicant) {
+        this.applicant = applicant;
+    }
+
     public Course() { }
 }
