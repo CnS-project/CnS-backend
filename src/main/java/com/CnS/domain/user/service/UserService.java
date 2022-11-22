@@ -88,4 +88,11 @@ public class UserService {
                 .build()
         );
     }
+
+    public void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+    }
 }
