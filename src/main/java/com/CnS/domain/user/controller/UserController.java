@@ -36,4 +36,9 @@ public class UserController {
     public ResponseEntity<List<Course>> inquire(@PathVariable("student-id") Integer id) {
         return ResponseEntity.ok(userService.courseList(id));
     }
+
+    @PutMapping("/courses/cancel")
+    public void cancel() {
+
+    }
 }
