@@ -28,12 +28,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final RegisterCourseRepository registerCourseRepository;
-    public coursesIdOfUserDto courseList(Integer id){
-
-        return coursesIdOfUserDto.builder()
-                    .coursesIds(registerCourseRepository.findByStudentId(id))
-                    .build();
-
+    public List<Course> courseList(Integer id){
+        List<String> coursesId = registerCourseRepository.findByStudentId(id);
+        List<Course> allByCoursesId = courseRepository.findAllByCoursesId(coursesId);
+        return allByCoursesId;
 
     }
     public Student login(LoginDto dto) {
