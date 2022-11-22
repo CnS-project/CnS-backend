@@ -35,13 +35,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{student-id}/courses")
-    public ResponseEntity<List<Course>> inquire(@PathVariable("student-id") Integer id) {
-        return ResponseEntity.ok(userService.courseList(id));
+    @GetMapping("/courses")
+    public ResponseEntity<List<Course>> inquire(HttpServletRequest req) {
+        return ResponseEntity.ok(userService.courseList(req));
     }
 
     @PutMapping("/courses/cancel")
-    public void cancel() {
+    public void cancel(@RequestBody RegisterCourseRequestDto dto) {
 
     }
     
