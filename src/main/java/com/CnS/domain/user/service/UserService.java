@@ -1,5 +1,7 @@
 package com.CnS.domain.user.service;
 
+import static com.CnS.global.constant.SessionConstants.SESSION_ID;
+
 import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.course.repository.CourseRepository;
 import com.CnS.domain.user.dto.LoginDto;
@@ -12,6 +14,8 @@ import com.CnS.domain.user.repository.UserRepository;
 import com.CnS.global.error.exception.CourseException;
 import com.CnS.global.error.exception.ErrorCode;
 import com.CnS.global.error.exception.UserException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,51 +35,71 @@ public class UserService {
         return allByCoursesId;
 
     }
-    public Student login(LoginDto dto) {
-        Optional<Student> student = userRepository.findById(dto.getStudentId());
-        if(student.isPresent()){
-            String password = student.get().getPassword();
-            if(dto.getPassword().equals(password)){
-                return student.get();
-            }else{
-                throw new IllegalArgumentException();
+
+    public void login(LoginDto dto, HttpServletRequest request) {
+        Optional<Student> existStudent = userRepository.findById(dto.getStudentId());
+        if (existStudent.isPresent()) {
+            String password = existStudent.get().getPassword();
+            if (dto.getPassword().equals(password)) {
+                Student student = existStudent.get();
+
+                HttpSession session = request.getSession();
+                session.setAttribute(SESSION_ID, student.getStudentId());
+            } else {
+                throw new UserException("패스워드가 잘못되었습니다.", ErrorCode.INVALID_USER_PASSWORD);
             }
 
-        }else{
-            throw new IllegalArgumentException();
+        } else {
+            throw new UserException("아이디가 잘못되었습니다.", ErrorCode.INVALID_USER_ID);
         }
     }
 
-    public void registerCourse(RegisterCourseRequestDto registerCourseRequestDto) {
-        // 1. 학수 번호 생성
+    public void registerCourse(RegisterCourseRequestDto registerCourseRequestDto,
+        HttpServletRequest request) {
+
+        // 1. 로그인이 되었는지 체크
+        HttpSession session = request.getSession();
+        if (session.getAttribute(SESSION_ID) == null) {
+            throw new UserException("세션 정보가 없습니다.", ErrorCode.NONE_SESSION_INFORMATION);
+        }
+
+        int userId = (int) session.getAttribute(SESSION_ID);
+
+        // 2. 학수 번호 생성
         String courseId = registerCourseRequestDto.getCourseNumber() + "-" +
             registerCourseRequestDto.getClassNumber();
 
         Optional<Course> existCourse = courseRepository.findById(courseId);
 
-        // 2. 해당 강의가 존재하는지 체크
+        // 3. 해당 강의가 존재하는지 체크
         if (existCourse.isEmpty()) {
             throw new CourseException(ErrorCode.COURSE_NOT_EXIST);
         }
-
-        // 세션 구현 시 세션에서 가져오기
-        int userId = 201702041;
 
         RegisterCourseId registerCourseId = RegisterCourseId.builder()
             .courseId(courseId)
             .studentId(userId).build();
 
-        Optional<RegisterCourse> existRegisterCourse = registerCourseRepository.findById(registerCourseId);
+        Optional<RegisterCourse> existRegisterCourse = registerCourseRepository.findById(
+            registerCourseId);
 
-        // 3. 이미 신청한 강의인지 체크
+        // 4. 이미 신청한 강의인지 체크
         if (existRegisterCourse.isPresent()) {
-            throw new UserException("이미 신청한 수업입니다.",ErrorCode.DUPLICATE_REGISTER);
+            throw new UserException("이미 신청한 수업입니다.", ErrorCode.DUPLICATE_REGISTER);
         }
 
+        // 5. 수강 신청 정보 저장
         registerCourseRepository.save(
             RegisterCourse.builder().
                 registerCourseId(registerCourseId)
                 .build()
         );
+    }
+
+    public void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }
