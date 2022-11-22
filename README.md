@@ -37,13 +37,6 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
 
   - URL - /users/logout
   - HTTP Method - PUT
-  - Request Header
-
-    ```
-    {
-        "sessionId" = String
-    }
-    ```
 
 - Response
   - Response Body (Status = 200)
@@ -82,12 +75,7 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
 - Request
     - URL - /users/registration-course
     - HTTP Method - POST
-    - Request Header
-      ```
-      {
-          "sessionId" = String
-      }
-      ```
+        
     - Request Body
       ```
       {
@@ -106,14 +94,8 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
 ### 신청 내역 조회
 
 - Request
-    - URL : /users/{student-id}/courses
+    - URL : /users/courses
     - HTTP Method : GET
-    - Request Parameter
-      ```
-      {
-          "student-id" = Integer
-      }
-      ```
 
 - Response
 
