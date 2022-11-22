@@ -1,8 +1,8 @@
 package com.CnS.domain.user.controller;
 
+import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.user.dto.LoginDto;
 import com.CnS.domain.user.dto.RegisterCourseRequestDto;
-import com.CnS.domain.user.dto.coursesIdOfUserDto;
 import com.CnS.domain.user.entity.Student;
 import com.CnS.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{student-id}/courses")
-    public ResponseEntity<coursesIdOfUserDto> inquire(@PathVariable("student-id") Integer id) {
+    public ResponseEntity<List<Course>> inquire(@PathVariable("student-id") Integer id) {
         return ResponseEntity.ok(userService.courseList(id));
     }
 }
