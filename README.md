@@ -61,8 +61,18 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
 ---
 ### 강의 목록 필터링
 - Request
-  - URL : /users/filtering
+  - URL : /users/filtering?courseId=""&name=""&professor=""&grade= &magor=""
   - HTTP Method : GET
+  - Parameter : 
+  ````
+  {
+      "courseId" : String,
+      "name" : name,
+      "professor" : String,
+      "grade" : Integer,
+      "major" : String
+  }
+  ````
 - Response
   - Response Body {Status = 200}
   ````
