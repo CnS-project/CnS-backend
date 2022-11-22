@@ -41,8 +41,9 @@ public class UserController {
     }
 
     @PutMapping("/courses/cancel")
-    public void cancel(@RequestBody RegisterCourseRequestDto dto) {
-
+    public ResponseEntity<Void> cancel(@RequestBody RegisterCourseRequestDto dto, HttpServletRequest request) {
+        userService.cancel(dto, request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     
     @PutMapping("/logout")
