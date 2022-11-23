@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter @Setter
 public class SearchParam {
     private String major;
-    private int grade;
+    private Integer grade;
     private String professor;
     private String name;
-    private String courseId;
+    private Integer courseNumber;
 
 
 }
