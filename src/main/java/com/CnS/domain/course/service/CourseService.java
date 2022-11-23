@@ -1,5 +1,6 @@
 package com.CnS.domain.course.service;
 
+import com.CnS.domain.course.dto.CourseDeleteRequestDto;
 import com.CnS.domain.course.dto.CourseInsertRequestDto;
 import com.CnS.domain.course.dto.CourseModifyRequestDto;
 import com.CnS.domain.course.entity.Course;
@@ -79,5 +80,20 @@ public class CourseService {
                 .major(courseModifyRequestDto.getMajor())
                 .build()
         );
+    }
+
+    public void deleteCourse(CourseDeleteRequestDto courseDeleteRequestDto) {
+        // 학수 번호 = 과목번호-분반
+        String courseId = courseDeleteRequestDto.getCourseNumber() + "-" +
+            courseDeleteRequestDto.getClassNumber();
+
+        Optional<Course> existCourse =
+            courseRepository.findById(courseId);
+
+        if (existCourse.isEmpty()) {
+            throw new CourseException("강의가 존재하지 않습니다", ErrorCode.COURSE_NOT_EXIST);
+        }
+
+        courseRepository.deleteById(courseId);
     }
 }
