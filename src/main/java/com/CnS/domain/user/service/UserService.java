@@ -54,7 +54,7 @@ public class UserService {
 
         return Collections.emptyList();
     }
-
+    @Transactional
     public void login(LoginDto dto, HttpServletRequest request) {
         Optional<Student> existStudent = userRepository.findById(dto.getStudentId());
         if (existStudent.isPresent()) {
@@ -171,7 +171,7 @@ public class UserService {
         student.setCredits(student.getCredits() - course.getCredit());
         course.setApplicant(course.getApplicant() - 1);
     }
-
+    @Transactional
     public List<Course> filter(SearchParam searchParam, HttpServletRequest request) {
         String major = "%" + searchParam.getMajor() + "%";
         String professor = "%" + searchParam.getProfessor() + "%";

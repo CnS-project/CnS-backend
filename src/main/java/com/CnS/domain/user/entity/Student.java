@@ -27,6 +27,8 @@ public class Student {
 
     private int credits;
 
+    private String major;
+
     public void setCredits(int credits) {
         this.credits = credits;
     }
