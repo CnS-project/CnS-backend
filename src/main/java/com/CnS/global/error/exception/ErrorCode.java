@@ -25,7 +25,10 @@ public enum ErrorCode {
     INVALID_USER_ID(401, "U4012", "User id is invalid"),
     INVALID_USER_PASSWORD(401, "U4013", "password is invalid"),
     OVER_CREDIT(400, "U4002", "Over Credit"),
-    INVALID_MAJOR(400, "U4003", "Major is inconsistent")
+    INVALID_MAJOR(400, "U4003", "Major is inconsistent"),
+
+    // Server
+    INVALID_SERVER_TIME(400,"S4001","Server time is over")
 
     ;
     private final String code;

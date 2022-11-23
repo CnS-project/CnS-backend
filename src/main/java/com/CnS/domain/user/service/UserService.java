@@ -2,6 +2,8 @@ package com.CnS.domain.user.service;
 
 import static com.CnS.global.constant.SessionConstants.SESSION_ID;
 
+import com.CnS.domain.admin.entity.Time;
+import com.CnS.domain.admin.repository.TimeRepository;
 import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.course.repository.CourseRepository;
 import com.CnS.domain.user.dto.LoginDto;
@@ -14,6 +16,7 @@ import com.CnS.domain.user.repository.RegisterCourseRepository;
 import com.CnS.domain.user.repository.UserRepository;
 import com.CnS.global.error.exception.CourseException;
 import com.CnS.global.error.exception.ErrorCode;
+import com.CnS.global.error.exception.ServerException;
 import com.CnS.global.error.exception.UserException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +39,30 @@ public class UserService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final RegisterCourseRepository registerCourseRepository;
+    private final TimeRepository timeRepository;
 
+    public boolean serverTimeValidation() {
+        List<Time> all = timeRepository.findAll();
+        Time time = all.get(0);
+        java.sql.Time endTime = time.getEndTime();
+        java.sql.Time startTime = time.getStartTime();
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("now = " + now);
+        int hour = now.getHour();
+        int minute = now.getMinute();
+        int second = now.getSecond();
+        String s = "";
+        s += hour + ":" +minute+":"+second;
+
+        java.sql.Time compareTime = java.sql.Time.valueOf(s);
+        if (compareTime.before(endTime) && compareTime.after(startTime)) {
+            System.out.println(" Ok ");
+            return true;
+        }else{
+            System.out.println("false");
+            return false;
+        }
+    }
     @Transactional
     public List<Course> courseList(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -56,6 +84,8 @@ public class UserService {
     }
     @Transactional
     public void login(LoginDto dto, HttpServletRequest request) {
+        serverTimeValidation();
+
         Optional<Student> existStudent = userRepository.findById(dto.getStudentId());
         if (existStudent.isPresent()) {
             String password = existStudent.get().getPassword();
@@ -76,6 +106,10 @@ public class UserService {
     @Transactional
     public void registerCourse(RegisterCourseRequestDto registerCourseRequestDto,
                                HttpServletRequest request) {
+        if (!serverTimeValidation()) {
+            //수강 신청 가능 시간 아닐 때,
+            throw new ServerException("수강 신청/취소 가능 시간이 아닙니다.", ErrorCode.INVALID_SERVER_TIME);
+        }
 
         // 1. 로그인이 되었는지 체크
         HttpSession session = request.getSession();
@@ -153,6 +187,10 @@ public class UserService {
 
     @Transactional
     public void cancel(RegisterCourseRequestDto dto, HttpServletRequest request) {
+        if (!serverTimeValidation()) {
+            //수강 신청 가능 시간 아닐 때,
+            throw new ServerException("수강 신청/취소 가능 시간이 아닙니다.", ErrorCode.INVALID_SERVER_TIME);
+        }
         HttpSession session = request.getSession();
         if (session.getAttribute(SESSION_ID) == null) {
             throw new UserException("세션 정보가 없습니다.", ErrorCode.NONE_SESSION_INFORMATION);
