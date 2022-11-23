@@ -83,15 +83,10 @@ public class AdminService {
         courseRepository.save(
                 Course.builder()
                         .courseId(courseId)
-                        .targetGrade(courseModifyRequestDto.getTargetGrade())
-                        .credit(courseModifyRequestDto.getCredit())
                         .name(courseModifyRequestDto.getName())
                         .courseNumber(courseModifyRequestDto.getCourseNumber())
                         .classNumber(courseModifyRequestDto.getClassNumber())
-                        .professor(courseModifyRequestDto.getProfessor())
                         .capacity(courseModifyRequestDto.getCapacity())
-                        .applicant(courseModifyRequestDto.getApplicant())
-                        .major(courseModifyRequestDto.getMajor())
                         .build()
         );
     }
