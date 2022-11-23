@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminService adminService;
-
+    
     @PostMapping("/admin/login")
     public ResponseEntity<Void> login(@RequestBody LoginDto dto, HttpServletRequest request) {
         adminService.login(dto, request);
