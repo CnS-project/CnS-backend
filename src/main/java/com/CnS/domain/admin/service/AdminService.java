@@ -82,6 +82,11 @@ public class AdminService {
 
         courseRepository.save(
                 Course.builder()
+                        .applicant(existCourse.get().getApplicant())
+                        .credit(existCourse.get().getCredit())
+                        .major(existCourse.get().getMajor())
+                        .targetGrade(existCourse.get().getTargetGrade())
+                        .professor(existCourse.get().getProfessor())
                         .courseId(courseId)
                         .name(courseModifyRequestDto.getName())
                         .courseNumber(courseModifyRequestDto.getCourseNumber())
