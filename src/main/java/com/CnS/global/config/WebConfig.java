@@ -13,7 +13,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
             .allowCredentials(true) // session 인증 설정
-            .allowedOriginPatterns("*");
+            .allowedOriginPatterns("*")
+            .allowedHeaders("*")
+            .exposedHeaders("*")
+            .allowedOrigins("*");
 //        registry.addMapping("/**")
 //            .allowedOrigins("*")   // 추후 frontend 배포 ip 추가하기
 //            .allowedHeaders("*")
