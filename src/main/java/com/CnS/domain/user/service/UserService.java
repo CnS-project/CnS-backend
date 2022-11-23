@@ -164,8 +164,11 @@ public class UserService {
         registerCourseRepository.deleteById(registerCourseId);
         System.out.println("rcId : " + rcId);
         Optional<Course> existCourse = courseRepository.findById(rcId);
+        Optional<Student> existStudent = userRepository.findById(userId);
 
+        Student student = existStudent.get();
         Course course = existCourse.get();
+        student.setCredits(student.getCredits() - course.getCredit());
         course.setApplicant(course.getApplicant() - 1);
     }
 
