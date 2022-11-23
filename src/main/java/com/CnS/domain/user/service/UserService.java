@@ -58,17 +58,12 @@ public class UserService {
         Optional<Student> existStudent = userRepository.findById(dto.getStudentId());
         if (existStudent.isPresent()) {
             String password = existStudent.get().getPassword();
-            System.out.println("student.getPassword() = " + password);
-            System.out.println("dto.getPassword() = " + dto.getPassword());
-
             if (dto.getPassword().equals(password)) {
                 Student student = existStudent.get();
-                System.out.println("student.getPassword() = " + student.getPassword());
-                System.out.println("dto.getPassword() = " + dto.getPassword());
+
                 HttpSession session = request.getSession();
                 session.setAttribute(SESSION_ID, student.getStudentId());
             } else {
-
                 throw new UserException("패스워드가 잘못되었습니다.", ErrorCode.INVALID_USER_PASSWORD);
             }
 
