@@ -192,3 +192,5 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
       classNumber : Integer
   }
   ````
+
+### 관리자 기능
