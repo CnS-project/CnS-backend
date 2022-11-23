@@ -13,7 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
             .allowCredentials(true) // session 인증 설정
-            .allowedOriginPatterns("*")
             .allowedHeaders("*")
             .exposedHeaders("*")
             .allowedOrigins("*");
