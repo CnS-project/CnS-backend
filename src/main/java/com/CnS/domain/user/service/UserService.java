@@ -58,12 +58,17 @@ public class UserService {
         Optional<Student> existStudent = userRepository.findById(dto.getStudentId());
         if (existStudent.isPresent()) {
             String password = existStudent.get().getPassword();
+            System.out.println("student.getPassword() = " + password);
+            System.out.println("dto.getPassword() = " + dto.getPassword());
+
             if (dto.getPassword().equals(password)) {
                 Student student = existStudent.get();
-
+                System.out.println("student.getPassword() = " + student.getPassword());
+                System.out.println("dto.getPassword() = " + dto.getPassword());
                 HttpSession session = request.getSession();
                 session.setAttribute(SESSION_ID, student.getStudentId());
             } else {
+
                 throw new UserException("패스워드가 잘못되었습니다.", ErrorCode.INVALID_USER_PASSWORD);
             }
 
@@ -163,8 +168,11 @@ public class UserService {
         registerCourseRepository.deleteById(registerCourseId);
         System.out.println("rcId : " + rcId);
         Optional<Course> existCourse = courseRepository.findById(rcId);
+        Optional<Student> existStudent = userRepository.findById(userId);
 
+        Student student = existStudent.get();
         Course course = existCourse.get();
+        student.setCredits(student.getCredits() - course.getCredit());
         course.setApplicant(course.getApplicant()-1);
     }
 }
