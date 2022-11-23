@@ -6,10 +6,6 @@ import lombok.Getter;
 @Getter
 public class CourseModifyRequestDto {
 
-    private Integer targetGrade;
-
-    private Integer credit;
-
     private String name;
 
     @NotNull
@@ -18,12 +14,7 @@ public class CourseModifyRequestDto {
     @NotNull
     private Integer classNumber;
 
-    private String professor;
-
     private Integer capacity;
 
-    private Integer applicant;
-
-    private String major;
 
 }
