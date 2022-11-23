@@ -119,7 +119,7 @@ public class UserService {
             throw new CourseException("정원이 꽉 찼습니다.", ErrorCode.OVER_CAPACITY);
         }
         int curCredit = existStudent.get().getCredits();
-        if(curCredit+existCourse.get().getCredit() > 9){
+        if (curCredit + existCourse.get().getCredit() > 9) {
             throw new UserException("수강 가능한 학점을 초과하였습니다. (9학점)", ErrorCode.OVER_CREDIT);
         }
 
@@ -133,8 +133,8 @@ public class UserService {
 
 
         Course course = existCourse.get();
-        course.setApplicant(course.getApplicant()+1);
-        Student student=existStudent.get();
+        course.setApplicant(course.getApplicant() + 1);
+        Student student = existStudent.get();
         student.setCredits(student.getCredits() + course.getCredit());
 
     }
@@ -158,7 +158,7 @@ public class UserService {
 
         String rcId = dto.getCourseNumber() + "-" + dto.getClassNumber();
 
-        RegisterCourseId registerCourseId= RegisterCourseId.builder()
+        RegisterCourseId registerCourseId = RegisterCourseId.builder()
                 .courseId(rcId)
                 .studentId(userId).build();
         registerCourseRepository.deleteById(registerCourseId);
@@ -166,22 +166,28 @@ public class UserService {
         Optional<Course> existCourse = courseRepository.findById(rcId);
 
         Course course = existCourse.get();
-        course.setApplicant(course.getApplicant()-1);
+        course.setApplicant(course.getApplicant() - 1);
     }
 
     public List<Course> filter(SearchParam searchParam, HttpServletRequest request) {
-        String major = searchParam.getMajor();
-        int grade = searchParam.getGrade();
-        String professor = searchParam.getProfessor();
-        String name = searchParam.getName();
-        String courseId = searchParam.getCourseId();
-        Course course = new Course();
-        System.out.println("courseId = " + courseId);
-        System.out.println("name = " + name);
-        System.out.println("professor = " + professor);
-        System.out.println("grade = " + grade);
-        System.out.println("major = " + major);
+        String major = "%" + searchParam.getMajor() + "%";
+        String professor = "%" + searchParam.getProfessor() + "%";
+        String name = "%" + searchParam.getName() + "%";
+        Integer grade = searchParam.getGrade();
+        Integer courseNumber = searchParam.getCourseNumber();
 
-        return Collections.emptyList();
+        //grade, courseNumber 구분
+        List<Course> allByConditions;
+        if (grade != null && courseNumber != null) {
+            allByConditions = courseRepository.findAllByConditionsWithTwo(courseNumber, name, professor, major, courseNumber);
+        } else if (grade != null && courseNumber == null) {
+            allByConditions = courseRepository.findAllByConditionsWithGrade(name, professor, major, grade);
+        } else if (grade == null && courseNumber != null) {
+            allByConditions = courseRepository.findAllByConditionsWithCourseNumber(courseNumber, name, professor, major);
+        } else {
+            allByConditions = courseRepository.findAllByConditionsWithZero(name, professor, major);
+        }
+
+        return allByConditions;
     }
 }
