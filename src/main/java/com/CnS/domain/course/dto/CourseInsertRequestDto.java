@@ -27,4 +27,9 @@ public class CourseInsertRequestDto {
     @NotNull
     private Integer capacity;
 
+    @NotNull
+    private Integer applicant;
+
+    @NotNull
+    private String major;
 }
