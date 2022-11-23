@@ -11,7 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        registry.addMapping("/**")
+            .allowedHeaders("*");
 //        registry.addMapping("/**")
 //            .allowedOrigins("*")   // 추후 frontend 배포 ip 추가하기
 //            .allowedHeaders("*")
