@@ -12,7 +12,7 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
 
 
 2. 수강신청 기능
-   - [ ] 수강신청 기능
+   - [x] 수강신청 기능
      - 강의 직접 클릭하여 신청
      - 과목번호 + 분반으로 신청
      - 학생 정보가 강의 수강 대상에 해당되지 않을 시 신청 불가
@@ -30,7 +30,7 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
 
 
 4. 시스템 관리 기능
-   - [ ] 수강 신청 가능 시간 설정
+   - [x] 수강 신청 가능 시간 설정
    - [x] 관리자 아이디로 접속 시 강의 목록 관리 가능
    - [x] 강의 데이터 수정
      - 강의명 변경, 정원 변경 등등
