@@ -99,7 +99,7 @@ public class UserService {
 
         // 3. 해당 강의가 존재하는지 체크
         if (existCourse.isEmpty()) {
-            throw new CourseException(ErrorCode.COURSE_NOT_EXIST);
+            throw new CourseException("강의가 존재하지 않습니다",ErrorCode.COURSE_NOT_EXIST);
         }
 
         RegisterCourseId registerCourseId = RegisterCourseId.builder()
