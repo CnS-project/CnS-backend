@@ -6,6 +6,7 @@ import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.course.repository.CourseRepository;
 import com.CnS.domain.user.dto.LoginDto;
 import com.CnS.domain.user.dto.RegisterCourseRequestDto;
+import com.CnS.domain.user.dto.SearchParam;
 import com.CnS.domain.user.entity.RegisterCourse;
 import com.CnS.domain.user.entity.RegisterCourseId;
 import com.CnS.domain.user.entity.Student;
@@ -89,7 +90,7 @@ public class UserService {
                 registerCourseRequestDto.getClassNumber();
 
         Optional<Course> existCourse = courseRepository.findById(courseId);
-
+        Optional<Student> existStudent = userRepository.findById(userId);
         /*
             prev number 를 가져오고,
             ++ , --
@@ -112,6 +113,16 @@ public class UserService {
         if (existRegisterCourse.isPresent()) {
             throw new UserException("이미 신청한 수업입니다.", ErrorCode.DUPLICATE_REGISTER);
         }
+        int capacity = existCourse.get().getCapacity();
+        int applicant = existCourse.get().getApplicant();
+        if (applicant >= capacity) {
+            throw new CourseException("정원이 꽉 찼습니다.", ErrorCode.OVER_CAPACITY);
+        }
+        int curCredit = existStudent.get().getCredits();
+        if(curCredit+existCourse.get().getCredit() > 9){
+            throw new UserException("수강 가능한 학점을 초과하였습니다. (9학점)", ErrorCode.OVER_CREDIT);
+        }
+
 
         // 5. 수강 신청 정보 저장
         registerCourseRepository.save(
@@ -119,9 +130,12 @@ public class UserService {
                         registerCourseId(registerCourseId)
                         .build()
         );
+
+
         Course course = existCourse.get();
         course.setApplicant(course.getApplicant()+1);
-
+        Student student=existStudent.get();
+        student.setCredits(student.getCredits() + course.getCredit());
 
     }
 
@@ -153,5 +167,21 @@ public class UserService {
 
         Course course = existCourse.get();
         course.setApplicant(course.getApplicant()-1);
+    }
+
+    public List<Course> filter(SearchParam searchParam, HttpServletRequest request) {
+        String major = searchParam.getMajor();
+        int grade = searchParam.getGrade();
+        String professor = searchParam.getProfessor();
+        String name = searchParam.getName();
+        String courseId = searchParam.getCourseId();
+        Course course = new Course();
+        System.out.println("courseId = " + courseId);
+        System.out.println("name = " + name);
+        System.out.println("professor = " + professor);
+        System.out.println("grade = " + grade);
+        System.out.println("major = " + major);
+
+        return Collections.emptyList();
     }
 }

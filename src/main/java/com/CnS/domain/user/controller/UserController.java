@@ -3,8 +3,12 @@ package com.CnS.domain.user.controller;
 import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.user.dto.LoginDto;
 import com.CnS.domain.user.dto.RegisterCourseRequestDto;
+import com.CnS.domain.user.dto.SearchParam;
 import com.CnS.domain.user.service.UserService;
+
 import javax.servlet.http.HttpServletRequest;
+
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +23,12 @@ public class UserController {
 
 
     private final UserService userService;
+
+    @GetMapping("/filtering")
+    public ResponseEntity<List<Course>> filter(SearchParam searchParam, HttpServletRequest request) {
+        return ResponseEntity.ok(userService.filter(searchParam, request));
+
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody LoginDto dto, HttpServletRequest request) {
@@ -36,8 +46,8 @@ public class UserController {
     }
 
     @GetMapping("/courses")
-    public ResponseEntity<List<Course>> inquire(HttpServletRequest req) {
-        return ResponseEntity.ok(userService.courseList(req));
+    public ResponseEntity<List<Course>> inquire(HttpServletRequest request) {
+        return ResponseEntity.ok(userService.courseList(request));
     }
 
     @PutMapping("/courses/cancel")
@@ -45,7 +55,7 @@ public class UserController {
         userService.cancel(dto, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    
+
     @PutMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         userService.logout(request);

@@ -50,14 +50,51 @@ https://traveling-organ-e7f.notion.site/2022-Cloud-Server-2eccf1fc81b94584898aae
                 "courseNumber" : Integer,
                 "classNumber" : Integer,
                 "professor" : String,
-                "capacity" : Integer
+                "capacity" : Integer,
+                "major" : String,
+                "applicant" : Integer
             }
             ...
         ]
     }
     ```
 ---
+### 강의 목록 필터링
+- Request
+  - URL : /users/filtering?courseId=""&name=""&professor=""&grade= &magor=""
+  - HTTP Method : GET
+  - Parameter : 
+  ````
+  {
+      "courseId" : String,
+      "name" : name,
+      "professor" : String,
+      "grade" : Integer,
+      "major" : String
+  }
+  ````
+- Response
+  - Response Body {Status = 200}
+  ````
+  {
+        "courses" : [
+            {
+                "targetGrade" : Integer,
+                "credit" : Integer,
+                "name" : String,
+                "courseNumber" : Integer,
+                "classNumber" : Integer,
+                "professor" : String,
+                "capacity" : Integer,
+                "major" : String,
+                "applicant" : Integer
+            }
+            …
+        ]
+    }
+  ````
 
+---
 ###  수강 신청
 
 - Request
