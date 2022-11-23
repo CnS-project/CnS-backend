@@ -6,6 +6,7 @@ import com.CnS.domain.course.entity.Course;
 import com.CnS.domain.course.repository.CourseRepository;
 import com.CnS.domain.user.dto.LoginDto;
 import com.CnS.domain.user.dto.RegisterCourseRequestDto;
+import com.CnS.domain.user.dto.SearchParam;
 import com.CnS.domain.user.entity.RegisterCourse;
 import com.CnS.domain.user.entity.RegisterCourseId;
 import com.CnS.domain.user.entity.Student;
@@ -98,7 +99,7 @@ public class UserService {
 
         // 3. 해당 강의가 존재하는지 체크
         if (existCourse.isEmpty()) {
-            throw new CourseException(ErrorCode.COURSE_NOT_EXIST);
+            throw new CourseException("강의가 존재하지 않습니다",ErrorCode.COURSE_NOT_EXIST);
         }
 
         RegisterCourseId registerCourseId = RegisterCourseId.builder()
@@ -118,7 +119,7 @@ public class UserService {
             throw new CourseException("정원이 꽉 찼습니다.", ErrorCode.OVER_CAPACITY);
         }
         int curCredit = existStudent.get().getCredits();
-        if(curCredit+existCourse.get().getCredit() > 9){
+        if (curCredit + existCourse.get().getCredit() > 9) {
             throw new UserException("수강 가능한 학점을 초과하였습니다. (9학점)", ErrorCode.OVER_CREDIT);
         }
 
@@ -132,8 +133,8 @@ public class UserService {
 
 
         Course course = existCourse.get();
-        course.setApplicant(course.getApplicant()+1);
-        Student student=existStudent.get();
+        course.setApplicant(course.getApplicant() + 1);
+        Student student = existStudent.get();
         student.setCredits(student.getCredits() + course.getCredit());
 
     }
@@ -157,7 +158,7 @@ public class UserService {
 
         String rcId = dto.getCourseNumber() + "-" + dto.getClassNumber();
 
-        RegisterCourseId registerCourseId= RegisterCourseId.builder()
+        RegisterCourseId registerCourseId = RegisterCourseId.builder()
                 .courseId(rcId)
                 .studentId(userId).build();
         registerCourseRepository.deleteById(registerCourseId);
@@ -168,6 +169,28 @@ public class UserService {
         Student student = existStudent.get();
         Course course = existCourse.get();
         student.setCredits(student.getCredits() - course.getCredit());
-        course.setApplicant(course.getApplicant()-1);
+        course.setApplicant(course.getApplicant() - 1);
+    }
+
+    public List<Course> filter(SearchParam searchParam, HttpServletRequest request) {
+        String major = "%" + searchParam.getMajor() + "%";
+        String professor = "%" + searchParam.getProfessor() + "%";
+        String name = "%" + searchParam.getName() + "%";
+        Integer grade = searchParam.getGrade();
+        Integer courseNumber = searchParam.getCourseNumber();
+
+        //grade, courseNumber 구분
+        List<Course> allByConditions;
+        if (grade != null && courseNumber != null) {
+            allByConditions = courseRepository.findAllByConditionsWithTwo(courseNumber, name, professor, major, courseNumber);
+        } else if (grade != null && courseNumber == null) {
+            allByConditions = courseRepository.findAllByConditionsWithGrade(name, professor, major, grade);
+        } else if (grade == null && courseNumber != null) {
+            allByConditions = courseRepository.findAllByConditionsWithCourseNumber(courseNumber, name, professor, major);
+        } else {
+            allByConditions = courseRepository.findAllByConditionsWithZero(name, professor, major);
+        }
+
+        return allByConditions;
     }
 }
