@@ -25,7 +25,7 @@ public enum ErrorCode {
     INVALID_USER_ID(401, "U4012", "User id is invalid"),
     INVALID_USER_PASSWORD(401, "U4013", "password is invalid"),
     OVER_CREDIT(400, "U4002", "Over Credit"),
-
+    INVALID_MAJOR(400, "U4003", "Major is inconsistent")
 
     ;
     private final String code;

@@ -54,7 +54,7 @@ public class UserService {
 
         return Collections.emptyList();
     }
-
+    @Transactional
     public void login(LoginDto dto, HttpServletRequest request) {
         Optional<Student> existStudent = userRepository.findById(dto.getStudentId());
         if (existStudent.isPresent()) {
@@ -122,6 +122,10 @@ public class UserService {
         if (curCredit + existCourse.get().getCredit() > 9) {
             throw new UserException("수강 가능한 학점을 초과하였습니다. (9학점)", ErrorCode.OVER_CREDIT);
         }
+        // major 일치 확인.
+        if (!existCourse.get().getMajor().equals(existStudent.get().getMajor())) {
+            throw new UserException("강의 수강 대상이 아닙니다.", ErrorCode.INVALID_MAJOR);
+        }
 
 
         // 5. 수강 신청 정보 저장
@@ -171,7 +175,7 @@ public class UserService {
         student.setCredits(student.getCredits() - course.getCredit());
         course.setApplicant(course.getApplicant() - 1);
     }
-
+    @Transactional
     public List<Course> filter(SearchParam searchParam, HttpServletRequest request) {
         String major = "%" + searchParam.getMajor() + "%";
         String professor = "%" + searchParam.getProfessor() + "%";

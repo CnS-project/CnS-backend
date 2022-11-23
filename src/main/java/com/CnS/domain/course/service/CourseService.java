@@ -24,7 +24,7 @@ public class CourseService {
             .courses(courseRepository.findAll())
             .build();
     }
-
+    @Transactional
     public void insertCourse(CourseInsertRequestDto courseInsertRequestDto) {
 
         // 학수 번호 = 과목번호-분반
@@ -53,7 +53,7 @@ public class CourseService {
                 .build()
         );
     }
-
+    @Transactional
     public void modifyCourse(CourseModifyRequestDto courseModifyRequestDto) {
         // 학수 번호 = 과목번호-분반
         String courseId = courseModifyRequestDto.getCourseNumber() + "-" +
@@ -81,7 +81,7 @@ public class CourseService {
                 .build()
         );
     }
-
+    @Transactional
     public void deleteCourse(CourseDeleteRequestDto courseDeleteRequestDto) {
         // 학수 번호 = 과목번호-분반
         String courseId = courseDeleteRequestDto.getCourseNumber() + "-" +
