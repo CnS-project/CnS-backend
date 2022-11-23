@@ -1,4 +1,4 @@
-package com.CnS.domain.course.dto;
+package com.CnS.domain.admin.dto;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
